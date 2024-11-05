@@ -1,7 +1,7 @@
-use webbrowser;
 use zed_extension_api::{
     self as zed, SlashCommand, SlashCommandOutput, SlashCommandOutputSection, Worktree,
 };
+use uuid::Uuid;
 
 struct CodeiumExtension {}
 
@@ -14,30 +14,28 @@ impl zed::Extension for CodeiumExtension {
     ) -> Result<SlashCommandOutput, String> {
         match command.name.as_str() {
             "open-codeium" => {
-                #[cfg(target_arch = "wasm32")]
-                {
-                    let window = web_sys::window().unwrap();
-                    if let Err(e) = window.open_with_url("https://codeium.com") {
-                        return Err(format!("Failed to open Codeium: {:?}", e));
-                    }
-                }
+                // Generate a unique UUID for the auth request
+                let uuid = Uuid::new_v4();
+                
+                // Construct the URL for authentication
+                let url = format!(
+                    "https://codeium.com/profile?response_type=token&redirect_uri=vim-show-auth-token&state={uuid}&scope=openid%20profile%20email&redirect_parameters_type=query"
+                );
 
-                #[cfg(not(target_arch = "wasm32"))]
-                {
-                    if let Err(e) = webbrowser::open("https://codeium.com") {
-                        return Err(format!("Failed to open Codeium: {:?}", e));
-                    }
-                }
-                let text = "Opening Codeium website...".to_string();
+                let message = format!(
+                    "Please open the following URL in your browser to authenticate with Codeium:\n\n{}",
+                    url
+                );
+
                 Ok(SlashCommandOutput {
-                    text: text.clone(),
+                    text: message.clone(),
                     sections: vec![SlashCommandOutputSection {
-                        label: "Success".to_string(),
-                        range: (0..text.len()).into(),
+                        label: "Codeium Authentication Link".to_string(),
+                        range: (0..message.len()).into(),
                     }],
                 })
             }
-            command => Err(format!("unknown slash command: \"{command}\"")),
+            command => Err(format!("Unknown command: \"{command}\"")),
         }
     }
 
