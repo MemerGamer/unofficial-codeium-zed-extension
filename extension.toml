@@ -8,3 +8,4 @@ repository = "https://github.com/MemerGamer/unofficial-codeium-zed-extension"
 
 [slash_commands.open-codeium]
 description = "Opens Codeium"
+requires_argument = false

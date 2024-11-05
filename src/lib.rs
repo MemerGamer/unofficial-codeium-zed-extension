@@ -1,8 +1,5 @@
-use zed_extension_api::{
-    self as zed,
-    SlashCommand, SlashCommandOutput, Worktree,
-};
 use webbrowser;
+use zed_extension_api::{self as zed, SlashCommand, SlashCommandOutput, Worktree};
 
 struct CodeiumExtension {}
 
@@ -36,3 +33,6 @@ impl zed::Extension for CodeiumExtension {
         CodeiumExtension {}
     }
 }
+
+// Register the extension
+zed_extension_api::register_extension!(CodeiumExtension);
