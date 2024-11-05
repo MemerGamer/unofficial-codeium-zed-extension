@@ -11,3 +11,4 @@ crate-type = ["cdylib"]
 zed_extension_api = "0.1.0"
 webbrowser = "1.0.2"
 dirs = "5.0.1"
+web-sys = { version = "0.3.72", features = ["Window"] }

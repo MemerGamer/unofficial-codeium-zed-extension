@@ -14,18 +14,28 @@ impl zed::Extension for CodeiumExtension {
     ) -> Result<SlashCommandOutput, String> {
         match command.name.as_str() {
             "open-codeium" => {
-                let url = "https://codeium.com";
-                if webbrowser::open(url).is_ok() {
-                    Ok(SlashCommandOutput {
-                        text: "Codeium opened".to_string(),
-                        sections: vec![SlashCommandOutputSection {
-                            range: (0..url.len()).into(),
-                            label: "Codeium".to_string(),
-                        }],
-                    })
-                } else {
-                    Err("Failed to open Codeium".to_string())
+                #[cfg(target_arch = "wasm32")]
+                {
+                    let window = web_sys::window().unwrap();
+                    if let Err(e) = window.open_with_url("https://codeium.com") {
+                        return Err(format!("Failed to open Codeium: {:?}", e));
+                    }
                 }
+
+                #[cfg(not(target_arch = "wasm32"))]
+                {
+                    if let Err(e) = webbrowser::open("https://codeium.com") {
+                        return Err(format!("Failed to open Codeium: {:?}", e));
+                    }
+                }
+                let text = "Opening Codeium website...".to_string();
+                Ok(SlashCommandOutput {
+                    text: text.clone(),
+                    sections: vec![SlashCommandOutputSection {
+                        label: "Success".to_string(),
+                        range: (0..text.len()).into(),
+                    }],
+                })
             }
             command => Err(format!("unknown slash command: \"{command}\"")),
         }
