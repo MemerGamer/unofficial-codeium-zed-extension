@@ -6,6 +6,6 @@ authors = ["Kovacs Balint-Hunor <kovacsbalinthunor13@gmail.com>"]
 description = "Integrates Codeium with Zed"
 repository = "https://github.com/MemerGamer/unofficial-codeium-zed-extension"
 
-[slash_commands.open-codeium]
+[slash_commands.codeium-auth]
 description = "Opens Codeium"
 requires_argument = false

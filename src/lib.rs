@@ -13,11 +13,12 @@ impl zed::Extension for CodeiumExtension {
         _worktree: Option<&Worktree>,
     ) -> Result<SlashCommandOutput, String> {
         match command.name.as_str() {
-            "open-codeium" => {
+            "codeium-auth" => {
                 // Generate a unique UUID for the auth request
                 let uuid = Uuid::new_v4();
                 
                 // Construct the URL for authentication
+                // NOTE: we are getting the token for vim because zed token is not supported yet
                 let url = format!(
                     "https://codeium.com/profile?response_type=token&redirect_uri=vim-show-auth-token&state={uuid}&scope=openid%20profile%20email&redirect_parameters_type=query"
                 );
