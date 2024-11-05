@@ -1,0 +1,7 @@
+id = "unofficial-codeium-extension"
+name = "Unofficial Codeium Extension"
+version = "0.0.1"
+schema_version = 1
+authors = ["Kovacs Balint-Hunor <kovacsbalinthunor13@gmail.com>"]
+description = "Integrates Codeium with Zed"
+repository = "https://github.com/MemerGamer/unofficial-codeium-zed-extension"
