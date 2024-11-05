@@ -9,3 +9,8 @@ repository = "https://github.com/MemerGamer/unofficial-codeium-zed-extension"
 [slash_commands.codeium-auth]
 description = "Opens Codeium"
 requires_argument = false
+
+[slash_commands.codeium-save-token]
+description = "Saves Codeium token"
+requires_argument = true
+
