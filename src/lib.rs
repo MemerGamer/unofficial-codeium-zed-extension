@@ -1,5 +1,7 @@
 use webbrowser;
-use zed_extension_api::{self as zed, SlashCommand, SlashCommandOutput, Worktree};
+use zed_extension_api::{
+    self as zed, SlashCommand, SlashCommandOutput, SlashCommandOutputSection, Worktree,
+};
 
 struct CodeiumExtension {}
 
@@ -16,13 +18,16 @@ impl zed::Extension for CodeiumExtension {
                 if webbrowser::open(url).is_ok() {
                     Ok(SlashCommandOutput {
                         text: "Codeium opened".to_string(),
-                        sections: vec![],
+                        sections: vec![SlashCommandOutputSection {
+                            range: (0..url.len()).into(),
+                            label: "Codeium".to_string(),
+                        }],
                     })
                 } else {
                     Err("Failed to open Codeium".to_string())
                 }
             }
-            _ => Err(format!("Unknown command: {}", command.name)),
+            command => Err(format!("unknown slash command: \"{command}\"")),
         }
     }
 
